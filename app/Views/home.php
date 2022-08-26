@@ -38,10 +38,17 @@ if (isset($_GET['tahun'])) {
                         <div class="col-2">
                             <div class="form-group">
                                 <select id="my-select" class="form-control" name="tahun">
-                                    <option value="">Pilih Tahun</option>
-                                    <option value="2021" selected>2021</option>
-                                    <option value="2022">2022</option>
+
+                                    <option value="" selected>Pilih Tahun </option>
+                                    <option value="2021" <?php if (isset($_GET['tahun'])) {
+                                                                $_GET['tahun'] == '2021' ? 'selected' : '';
+                                                            } ?>>2021</option>
+                                    <option value="2022" <?php if (isset($_GET['tahun'])) {
+                                                                $_GET['tahun'] == '2022' ? 'selected' : '';
+                                                            } ?>>2022</option>
+
                                 </select>
+
                             </div>
                         </div>
                         <div class="col-4">
@@ -58,149 +65,154 @@ if (isset($_GET['tahun'])) {
                     </div>
                 </form>
                 <hr>
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered" style="margin: 0;">
-                        <thead>
-                            <tr class="table-dark">
-                                <th rowspan="2" style="text-align:center;vertical-align: middle;width: 250px;">Menu</th>
-                                <th colspan="12" style="text-align: center;">Periode Pada <?php echo $_GET['tahun'] ?>
-                                </th>
-                                <th rowspan="2" style="text-align:center;vertical-align: middle;width:75px">Total</th>
-                            </tr>
-                            <tr class="table-dark">
-                                <th style="text-align: center;width: 75px;">Jan</th>
-                                <th style="text-align: center;width: 75px;">Feb</th>
-                                <th style="text-align: center;width: 75px;">Mar</th>
-                                <th style="text-align: center;width: 75px;">Apr</th>
-                                <th style="text-align: center;width: 75px;">Mei</th>
-                                <th style="text-align: center;width: 75px;">Jun</th>
-                                <th style="text-align: center;width: 75px;">Jul</th>
-                                <th style="text-align: center;width: 75px;">Ags</th>
-                                <th style="text-align: center;width: 75px;">Sep</th>
-                                <th style="text-align: center;width: 75px;">Okt</th>
-                                <th style="text-align: center;width: 75px;">Nov</th>
-                                <th style="text-align: center;width: 75px;">Des</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="table-secondary" colspan="14"><b>Makanan</b></td>
-                            </tr>
-                            <?php
+                <?php
+                if (!empty($_GET['tahun'])) {
+                ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" style="margin: 0;">
+                            <thead>
+                                <tr class="table-dark">
+                                    <th rowspan="2" style="text-align:center;vertical-align: middle;width: 250px;">Menu</th>
 
-                            $totaly = 0;
-                            $totmont = 0;
-                            $totmenu = 0 ?>
-                            <?php foreach ($menu as $m) : ?>
-                                <?php if ($m->kategori == 'makanan') { ?>
-                                    <tr>
-
-                                        <td><?php echo $m->menu ?></td>
-                                        <?php
-
-                                        for ($i = 1; $i <= 12; $i++) {
-
-                                            foreach ($transaksi as $t) :
-
-                                                if ($m->menu == $t->menu && date('n', strtotime($t->tanggal)) == $i) {
-                                                    $totmont += $t->total;
-                                                    $totmenu += $t->total;
-                                                }
-
-                                            endforeach; ?>
-                                            <td style="text-align: right;">
-                                                <?= $english_format_number = number_format($totmont) ?>
-                                            </td>
-
-                                        <?php
-
-                                            $totmont = 0;
-                                        }
-                                        ?>
-
-                                        <td style="text-align: right;"><b> <?= $english_format_number = number_format($totmenu) ?></b></td>
-
-                                    </tr>
-                                    <tr>
+                                    <th colspan="12" style="text-align: center;">Periode Pada <?php echo $_GET['tahun'] ?>
+                                    </th>
+                                    <th rowspan="2" style="text-align:center;vertical-align: middle;width:75px">Total</th>
+                                </tr>
+                                <tr class="table-dark">
+                                    <th style="text-align: center;width: 75px;">Jan</th>
+                                    <th style="text-align: center;width: 75px;">Feb</th>
+                                    <th style="text-align: center;width: 75px;">Mar</th>
+                                    <th style="text-align: center;width: 75px;">Apr</th>
+                                    <th style="text-align: center;width: 75px;">Mei</th>
+                                    <th style="text-align: center;width: 75px;">Jun</th>
+                                    <th style="text-align: center;width: 75px;">Jul</th>
+                                    <th style="text-align: center;width: 75px;">Ags</th>
+                                    <th style="text-align: center;width: 75px;">Sep</th>
+                                    <th style="text-align: center;width: 75px;">Okt</th>
+                                    <th style="text-align: center;width: 75px;">Nov</th>
+                                    <th style="text-align: center;width: 75px;">Des</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="table-secondary" colspan="14"><b>Makanan</b></td>
+                                </tr>
                                 <?php
-                                    $totaly += $totmenu;
-                                    $totmenu = 0;
-                                }
 
-                            endforeach; ?>
-                                <td class="table-secondary" colspan="14"><b>Minuman</b></td>
-                                    </tr>
-                                    <?
-                                    $totmont = 0;
-                                    $totmenu = 0 ?>
-                                    <?php foreach ($menu as $m) : ?>
-                                        <?php if ($m->kategori == 'minuman') { ?>
-                                            <tr>
+                                $totaly = 0;
+                                $totmont = 0;
+                                $totmenu = 0 ?>
+                                <?php foreach ($menu as $m) : ?>
+                                    <?php if ($m->kategori == 'makanan') { ?>
+                                        <tr>
 
-                                                <td><?php echo $m->menu ?></td>
-                                                <?php
+                                            <td><?php echo $m->menu ?></td>
+                                            <?php
 
-                                                for ($i = 1; $i <= 12; $i++) {
+                                            for ($i = 1; $i <= 12; $i++) {
 
-                                                    foreach ($transaksi as $t) :
+                                                foreach ($transaksi as $t) :
 
-                                                        if ($m->menu == $t->menu && date('n', strtotime($t->tanggal)) == $i) {
-                                                            $totmont += $t->total;
-                                                            $totmenu += $t->total;
-                                                        }
+                                                    if ($m->menu == $t->menu && date('n', strtotime($t->tanggal)) == $i) {
+                                                        $totmont += $t->total;
+                                                        $totmenu += $t->total;
+                                                    }
 
-                                                    endforeach; ?>
+                                                endforeach; ?>
+                                                <td style="text-align: right;">
+                                                    <?= $english_format_number = number_format($totmont) ?>
+                                                </td>
 
-                                                    <td style="text-align: right;">
-                                                        <?= $english_format_number = number_format($totmont) ?>
-                                                    </td>
-                                                <?php
+                                            <?php
 
-                                                    $totmont = 0;
-                                                    // $curmont++;
-                                                }
-                                                ?>
+                                                $totmont = 0;
+                                            }
+                                            ?>
 
-                                                <td style="text-align: right;"><b><?= $english_format_number = number_format($totmenu) ?></b></td>
+                                            <td style="text-align: right;"><b> <?= $english_format_number = number_format($totmenu) ?></b></td>
 
-                                            </tr>
-                                            <tr>
-                                        <?php
-                                            $totaly += $totmenu;
-                                            $totmenu = 0;
-                                        }
+                                        </tr>
+                                        <tr>
+                                    <?php
+                                        $totaly += $totmenu;
+                                        $totmenu = 0;
+                                    }
 
-                                    endforeach; ?>
+                                endforeach; ?>
+                                    <td class="table-secondary" colspan="14"><b>Minuman</b></td>
+                                        </tr>
+                                        <?
+                                        $totmont = 0;
+                                        $totmenu = 0 ?>
+                                        <?php foreach ($menu as $m) : ?>
+                                            <?php if ($m->kategori == 'minuman') { ?>
+                                                <tr>
 
-                                            <tr class="table-dark">
-                                                <td><b>Total</b></td>
-                                                <?php
-                                                for ($i = 1; $i <= 12; $i++) {
+                                                    <td><?php echo $m->menu ?></td>
+                                                    <?php
 
-                                                    foreach ($transaksi as $t) :
+                                                    for ($i = 1; $i <= 12; $i++) {
 
-                                                        if (date('n', strtotime($t->tanggal)) == $i) {
-                                                            $totmont += $t->total;
-                                                            $totmenu += $t->total;
-                                                        }
+                                                        foreach ($transaksi as $t) :
 
-                                                    endforeach; ?>
+                                                            if ($m->menu == $t->menu && date('n', strtotime($t->tanggal)) == $i) {
+                                                                $totmont += $t->total;
+                                                                $totmenu += $t->total;
+                                                            }
+
+                                                        endforeach; ?>
+
+                                                        <td style="text-align: right;">
+                                                            <?= $english_format_number = number_format($totmont) ?>
+                                                        </td>
+                                                    <?php
+
+                                                        $totmont = 0;
+                                                        // $curmont++;
+                                                    }
+                                                    ?>
+
+                                                    <td style="text-align: right;"><b><?= $english_format_number = number_format($totmenu) ?></b></td>
+
+                                                </tr>
+                                                <tr>
+                                            <?php
+                                                $totaly += $totmenu;
+                                                $totmenu = 0;
+                                            }
+
+                                        endforeach; ?>
+
+                                                <tr class="table-dark">
+                                                    <td><b>Total</b></td>
+                                                    <?php
+                                                    for ($i = 1; $i <= 12; $i++) {
+
+                                                        foreach ($transaksi as $t) :
+
+                                                            if (date('n', strtotime($t->tanggal)) == $i) {
+                                                                $totmont += $t->total;
+                                                                $totmenu += $t->total;
+                                                            }
+
+                                                        endforeach; ?>
 
 
-                                                    <td style="text-align: right;">
-                                                        <b><?= $english_format_number = number_format($totmont) ?></b>
-                                                    </td>
-                                                <?php
+                                                        <td style="text-align: right;">
+                                                            <b><?= $english_format_number = number_format($totmont) ?></b>
+                                                        </td>
+                                                    <?php
 
-                                                    $totmont = 0;
-                                                }
-                                                ?>
+                                                        $totmont = 0;
+                                                    }
+                                                    ?>
 
-                                                <td style="text-align: right;"><b><?= $english_format_number = number_format($totaly) ?></b></td>
-                                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                                                    <td style="text-align: right;"><b><?= $english_format_number = number_format($totaly) ?></b></td>
+                                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php } ?>
             </div>
             <!-- <?php //if (isset($menu)) { 
                     ?>
@@ -208,11 +220,13 @@ if (isset($_GET['tahun'])) {
                 <div class="row m-3">
                     <div class="col-6">
                         <h4>Isi Json Menu</h4>
-                        <pre style="height: 400px; background:#eaeaea;"><?php var_dump($menu) ?></pre>
+                        <pre style="height: 400px; background:#eaeaea;"><?php //var_dump($menu) 
+                                                                        ?></pre>
                     </div>
                     <div class="col-6">
                         <h4>Isi Json Transaksi</h4>
-                        <pre style="height: 400px; background:#eaeaea;"><?php var_dump($transaksi) ?></pre>
+                        <pre style="height: 400px; background:#eaeaea;"><?php //var_dump($transaksi) 
+                                                                        ?></pre>
                     </div>
                 </div>
             <?php //} 
