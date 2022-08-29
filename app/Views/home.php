@@ -1,9 +1,3 @@
-<?php
-if (isset($_GET['tahun'])) {
-    $menu = json_decode(file_get_contents("http://tes-web.landa.id/intermediate/menu"));
-    $transaksi = json_decode(file_get_contents("http://tes-web.landa.id/intermediate/transaksi?tahun=" . $_GET['tahun']));
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 

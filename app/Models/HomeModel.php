@@ -16,7 +16,7 @@ class HomeModel extends Model
 
     public function getTransaksi($tahun = '')
     {
-        $data = file_get_contents('https://tes-web.landa.id/intermediate/transaksi?tahun=', $tahun);
+        $data = file_get_contents('https://tes-web.landa.id/intermediate/transaksi?tahun=' . $tahun);
         return $data;
     }
 }

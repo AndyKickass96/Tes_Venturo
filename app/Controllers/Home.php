@@ -21,10 +21,10 @@ class Home extends BaseController
     {
         $tahun = $_GET;
         $data = [
-            'menu' => json_decode($this->homeModel->getMenu(), true),
-            'transaksi' => json_decode($this->homeModel->getTransaksi($tahun['tahun']), true),
-            'tahun' => $tahun['tahun']
+            'menu' => json_decode($this->homeModel->getMenu()),
+            'transaksi' => json_decode($this->homeModel->getTransaksi($tahun['tahun']))
         ];
+
 
         return view('home', $data);
     }
